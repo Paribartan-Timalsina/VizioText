@@ -18,7 +18,7 @@ import base64
 import requests
 
 def query_custom_api(image):
-    """Send image to Hugging Face model and get the generated caption."""
+    """Send image to CNN+LSTM model and get the generated caption."""
     # Convert image to bytes
     buffered = io.BytesIO()
     image.save(buffered, format="JPEG")  # Ensure the format is JPEG
@@ -57,7 +57,7 @@ def query_huggingface_api(image):
 # Streamlit app
 st.title("Gen Caption")
 st.sidebar.title("Model Selection")
-model_choice = st.sidebar.radio("Choose a model:", ["Custom API (ViT-GPT2)", "Hugging Face API (GIT-Base)"])
+model_choice = st.sidebar.radio("Choose a model:", ["CNN+LSTM", "Hugging Face API (GIT-Base)"])
 
 st.header("Upload an Image")
 uploaded_image = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
@@ -70,11 +70,11 @@ if uploaded_image is not None:
     # Generate button
     if st.button("Generate Caption"):
         with st.spinner("Generating caption..."):
-            if model_choice == "Custom API (ViT-GPT2)":
+            if model_choice == "CNN+LSTM":
                 result = query_custom_api(image)
             elif model_choice == "Hugging Face API (GIT-Base)":
                 result = query_huggingface_api(image)
-
+            print(result)
             # Extract and display the caption
             try:
                 st.write(f"### {result[0]['generated_text']}")
