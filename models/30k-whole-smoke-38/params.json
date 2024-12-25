@@ -1,0 +1,13 @@
+{
+    "name": "whole-smoke-38",
+    "trained_on": "flickr30k",
+    "absolute_max_length": 31,
+    "IMAGE_INPUT_SHAPE": [
+        224,
+        224,
+        3
+    ],
+    "INPUT_FEATURE_SHAPE": [
+        4096
+    ]
+}
