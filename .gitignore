@@ -1,4 +1,5 @@
 .env
+sync-from-kaggle
 .ipynb_checkpoints
 
 # Byte-compiled / optimized / DLL files
@@ -225,3 +226,5 @@ Pods
 xcuserdata
 
 *.keras
+caption/
+bigyan
