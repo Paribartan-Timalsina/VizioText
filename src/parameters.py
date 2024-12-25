@@ -13,7 +13,8 @@ WORKING_DIR = Path("/kaggle/working")
 INPUT_DIR = Path("/kaggle/input/")
 DATASET_INPUT_DIR = INPUT_DIR.joinpath(DATASET_NAME)
 TEMP_DIR = Path("/tmp")
-PRETRAINED_MODEL_LOCATION = Path('/kaggle/input/1024_batch_size_35_epoch/keras/default/1/models.keras')
+RUN_NAME = "30k-whole-smoke-38"
+PRETRAINED_MODEL_LOCATION = Path(__file__).parents[1].joinpath("models", RUN_NAME, "final_model.keras")
 
 # preprocessing
 FILTER_NON_ALPHA_NUMERIC_STRINGS = True
@@ -50,3 +51,4 @@ DEBUG = False
 LOGGER_NAME = "Image-Caption-Generator-Logger"
 TENSORBOARD_LOG_DIR = WORKING_DIR.joinpath("logs", "scalers", datetime.now().strftime("%Y%m%d-%H%M%S"))
 WANDB_PROJECT_NAME = "Image Caption Generator-Multi-GPU Pre-Infer Images"
+
