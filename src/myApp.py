@@ -5,6 +5,12 @@ import io
 from dotenv import load_dotenv
 import os
 
+import io
+import base64
+
+from keras.utils import img_to_array
+from infer import initialize, run_on_custom_image
+
 load_dotenv('.env')
 
 # Hugging Face API details
@@ -12,13 +18,16 @@ API_URL_custom: str = os.getenv("API_URL_custom")
 API_URL: str = os.getenv("API_URL")
 TOKEN: str = os.getenv("HUGGING_FACE_TOKEN")
 headers = {"Authorization": f"{TOKEN}"}
+USE_LOCAL_FOR_CNN_LSTM = True
 
-import io
-import base64
-import requests
-
-def query_custom_api(image):
+def query_custom_api(image: Image, use_local=USE_LOCAL_FOR_CNN_LSTM):
     """Send image to CNN+LSTM model and get the generated caption."""
+
+    if use_local:
+        prediction = run_on_custom_image(img_to_array(image.resize((224, 224))))
+        
+        return [{"generated_text": prediction}]
+
     # Convert image to bytes
     buffered = io.BytesIO()
     image.save(buffered, format="JPEG")  # Ensure the format is JPEG
@@ -52,6 +61,10 @@ def query_huggingface_api(image):
     response = requests.post(API_URL, headers=headers, json=data)
     
     return response.json()
+
+# initialize model for running locally
+if USE_LOCAL_FOR_CNN_LSTM:
+    initialize()
 
 
 # Streamlit app

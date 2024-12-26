@@ -11,12 +11,15 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 model_for_inference: Model | None = None
+base_model: Model | None = None
+inference_vocab_handler: VocabHandler | None = None
 default_model_path: Path = PRETRAINED_MODEL_LOCATION
 default_vocab_handler_path: Path = default_model_path.parent
 
 test_images_path: Path = Path(__file__).parents[1].joinpath("test_images")
 
 def get_base_model():
+    global base_model
     base_model = VGG19(
         include_top=True,
         weights="imagenet",
@@ -64,6 +67,17 @@ def test_on_new_image(image: Path | np.ndarray, max_text_length: int, tokenizer:
         text_input += " " + text_output
     
     return whole_text_output
+
+def initialize():
+    global inference_vocab_handler
+    base_model: Model = get_base_model()
+
+    model = load_model_for_inference()
+    inference_vocab_handler = VocabHandler(["a", "an", "the"])
+    inference_vocab_handler.load(default_vocab_handler_path)
+
+def run_on_custom_image(image):
+    return test_on_new_image(image, 31, inference_vocab_handler, base_model)
 
 if __name__=="__main__":
     base_model: Model = get_base_model()
